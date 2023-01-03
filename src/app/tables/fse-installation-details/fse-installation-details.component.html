@@ -1,0 +1,71 @@
+<html>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
+  <body>
+      <div class="button-container" style="flex-wrap:wrap;">
+        <div id="butn">
+          <button class="btn btn-primary mx-auto" (click)="addUser()" id="button1" style="margin-right: 1%;">
+          Add Row</button>
+          <button class="btn btn-primary mx-auto" [disabled]="prospects.length === 1" (click)="deleteUser()" id="button2" style="margin-left: 1%;">
+            Delete Row</button>
+            <button class="btn btn-primary mx-auto" (click)="reset()" id="button3" style="margin-left: 1%;">
+            Reset Page</button>
+        </div>
+      </div>
+      <br />
+      <div style="overflow-x:scroll;">
+        <ngx-spinner
+      bdColor = "rgba(51, 51, 51, 0.8)"
+      size = "medium"
+      color = "#fff"
+      type = "ball-scale-multiple"
+      [fullScreen]="true">
+      <p style="color: white">Loading...</p>
+    </ngx-spinner>
+      <table class="style">
+        <thead>
+          <tr>
+            <th>fetch_row</th>
+            <th>save_row</th>
+            <th>update_row</th>
+            <th>delete_row</th>
+            <th>prospect_id</th>
+            <th>fse_angaza_id</th>
+            <th>installation_picture</th>
+            <th>latitude</th>
+            <th>longitude</th>
+            <th>distance</th>
+            <th>accuracy</th>
+            <th>attempt</th>
+            <th>country</th>
+            <th>image_name</th>
+            <th>is_rejected</th>
+            <th>rejection_attempt</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of prospects; let i = index">
+            <td><button (click)="getData(row,i)" [disabled]="!checkProspectOnly(i) || !validateProspect(i)" ><i class="fa fa-refresh"></i></button></td>
+            <td><button (click)="saveData(row,i)" [disabled]="!checkFields(i) || !validateProspect(i)"><i class="fa fa-floppy-o"></i></button></td>
+            <td><button [disabled] = "!row.updateFlag || !validateProspect(i)" (click)="updateData(row,i)"><i class="fa fa-pencil-square"></i></button></td>
+            <td><button  [disabled]="prospects.length === 1" (click)="deleteRow(i)"><i class="fa fa-trash"></i></button></td>
+            <td><input [(ngModel)]="row.prospect_id" name="prospect_id" type="text"/></td>
+            <td><input [(ngModel)]="row.fse_angaza_id" name="fse_angaza_id" type="text" /></td>
+            <td><input [(ngModel)]="row.installation_picture" name="installation_picture" type="text" /></td>
+            <td><input [(ngModel)]="row.latitude" name="latitude" type="text" /></td>
+            <td><input [(ngModel)]="row.longitude" name="longitude" type="text" /></td>
+            <td><input [(ngModel)]="row.distance" name="distance" type="text" /></td>
+            <td><input [(ngModel)]="row.accuracy" name="accuracy" type="text" /></td>
+            <td><input [(ngModel)]="row.attempt" name="attempt" type="text" /></td>
+            <td><input [(ngModel)]="row.country" name="country" type="text" /></td>
+            <td><input [(ngModel)]="row.image_name" name="image_name" type="text" /></td>
+            <td><input [(ngModel)]="row.is_rejected" name="is_rejected" type="text" /></td>
+            <td><input [(ngModel)]="row.rejection_attempt" name="rejection_attempt" type="text" /></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+</body>
+</html>

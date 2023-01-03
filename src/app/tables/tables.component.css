@@ -1,0 +1,35 @@
+select {
+  background-color: rgb(255, 219, 0);
+  border: none;
+  position: absolute;
+  padding: auto;
+  font-size: 100%;  
+}
+.navbar {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  background-color: rgb(255, 219, 0);
+  text-align: center;
+}
+.navbar-nav a, .navbar-brand {
+  align-items: center;
+  color: rgb(0, 0, 0);
+}
+.form-select{
+ width: auto;
+}
+.container-fluid {
+  display: flex;
+  justify-content: center;
+  margin-top: 1%;
+}
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}

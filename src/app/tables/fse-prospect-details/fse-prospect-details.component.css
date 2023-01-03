@@ -1,0 +1,64 @@
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.style {
+    font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
+    /* font-family : inherit; */
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  .style td,
+  .style th {
+    border: 1px solid rgb(0, 0, 0);
+    padding: 8px;
+  }
+  
+  .style tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .style tr:hover {
+    background-color: #ddd;
+  }
+  
+  .style th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: rgb(255, 219, 0);
+    color: rgb(0, 0, 0);
+    width: 100px;
+  }
+  
+  input {
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  button {
+    padding: 12px 20px;
+    margin: 2% 25% 0;
+    display: inline-block;
+    border: 1px solid rgb(5, 2, 2);
+    border-radius: 4px;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+  #butn {
+    margin: 7% auto 0 auto;
+    display: flexbox;
+  }
+
+  button.btn.btn-primary.mx-auto {
+    color: rgb(0, 0, 0);
+    /* margin: 10px; */
+    background-color: rgb(255, 219, 0) !important;
+  }
+  .button-container button {
+    margin: 10px;
+    margin-left: 2% !important;
+  }

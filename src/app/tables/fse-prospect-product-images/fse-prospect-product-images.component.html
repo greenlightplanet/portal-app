@@ -1,0 +1,57 @@
+<html>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
+  <body>
+      <div class="button-container" style="flex-wrap:wrap;">
+        <div id="butn">
+          <button class="btn btn-primary mx-auto" (click)="addUser()" id="button1" style="margin-right: 1%;">
+          Add Row</button>
+          <button class="btn btn-primary mx-auto" [disabled]="prospects.length === 1" (click)="deleteUser()" id="button2" style="margin-left: 1%;">
+            Delete Row</button>
+            <button class="btn btn-primary mx-auto" (click)="reset()" id="button3" style="margin-left: 1%;">
+            Reset Page</button>
+        </div>
+      </div>
+      <br />
+      <div style="overflow-x:scroll;">
+        <ngx-spinner
+      bdColor = "rgba(51, 51, 51, 0.8)"
+      size = "medium"
+      color = "#fff"
+      type = "ball-scale-multiple"
+      [fullScreen]="true">
+      <p style="color: white">Loading...</p>
+    </ngx-spinner>
+        <table class="style" >
+          <thead>
+            <tr>
+              <th>fetch_row</th>
+              <th>save_row</th>
+              <th>update_row</th>
+              <th>delete_row</th>
+              <th>product_name</th>
+              <th>country</th>
+              <th>image_names</th>
+              <th>image_urls</th>
+              <th>category</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of prospects; let i = index">
+              <td><button (click)="getData(row,i)" [disabled]="!checkProductNameOnly(i)" ><i class="fa fa-refresh"></i></button></td>
+              <td><button (click)="saveData(row,i)" [disabled]="!checkFields(i)"><i class="fa fa-floppy-o"></i></button></td>
+              <td><button [disabled] = "!row.updateFlag" (click)="updateData(row,i)"><i class="fa fa-pencil-square"></i></button></td>
+              <td><button  [disabled]="prospects.length === 1" (click)="deleteRow(i)"><i class="fa fa-trash"></i></button></td>
+              <td><input [(ngModel)]="row.product_name" name="product_name" type="text" /></td>
+              <td><input [(ngModel)]="row.country" name="country" type="text" /></td>
+              <td><input [(ngModel)]="row.image_names" name="image_names" type="text" /></td>
+              <td><input [(ngModel)]="row.image_urls" name="image_urls" type="text" /></td>
+              <td><input [(ngModel)]="row.category" name="category" type="text" /></td>
+            </tr>
+          </tbody>
+      </table>
+    </div>
+</body>
+</html>
