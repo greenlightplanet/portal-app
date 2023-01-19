@@ -1,0 +1,61 @@
+<html>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
+  <body>
+    <form (ngSubmit)="saveTable()">
+      <div class="button-container">
+        <div id="butn">
+          <button class="btn btn-primary mx-auto" (click)="addTable()" id="button1">
+          Add Row</button>
+          <button class="btn btn-primary mx-auto" (click)="saveTable()" id="button2" type="submit">
+          Save Data</button>
+          <br />
+        </div>
+      </div>
+      <br />
+    <div style="overflow-x:scroll;">
+      <table class="style">
+        <tr>
+            <th>fse_angaza_id</th>
+            <th>prospect_id</th>
+            <th>installation_picture</th>
+            <th>latitude</th>
+            <th>longitude</th>
+            <th>distance</th>
+            <th>accuracy</th>
+            <th>attempt</th>
+            <th>country</th>
+            <th>created_at</th>
+            <th>updated_at</th>
+            <th>image_name</th>
+            <th>is_rejected</th>
+            <th>rejection_attempt</th>
+            <th>delete_row</th>
+            <th>load_row</th>
+        </tr>
+        <tr *ngFor="let item of row; let i = index">
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td>
+            <button (click)="deleteRow(i)"><i class="fa fa-trash"></i></button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </form>
+</body>
+</html>

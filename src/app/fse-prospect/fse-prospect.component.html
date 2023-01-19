@@ -1,0 +1,108 @@
+<html>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
+  <body>
+    <form (ngSubmit)="saveTable()">
+      <div class="button-container">
+        <div id="butn">
+          <button class="btn btn-primary mx-auto" (click)="addTable()" id="button1">
+          Add Row</button>
+          <button class="btn btn-primary mx-auto" (click)="saveTable()" id="button2" type="submit">
+          Save Data</button>
+          <br />
+        </div>
+      </div>
+      <br />
+    <div style="overflow-x:scroll;">
+      <table class="style">
+        <tr>
+          <th>prospect_id</th>
+          <th>fse_angaza_id</th>
+          <th>agent_user_name</th>
+          <th>customer_name</th>
+          <th>status</th>
+          <th>customer_phone_number</th>
+          <th>customer_secondary_phone_number</th>
+          <th>customer_address</th>
+          <th>account_number</th>
+          <th>product_name</th>
+          <th>ticket_type</th>
+          <th>otp</th>
+          <th>unsuccessful_otp_attempts</th>
+          <th>installation_attempted</th>
+          <th>body</th>
+          <th>body_registration</th>
+          <th>latitude</th>
+          <th>longitude</th>
+          <th>checkin_accuracy</th>
+          <th>distance</th>
+          <th>area</th>
+          <th>is_otp_call_approved</th>
+          <th>country</th>
+          <th>created_at</th>
+          <th>updated_at</th>
+          <th>reassignment_attempt</th>
+          <th></th>
+        </tr>
+        <tr *ngFor="let item of row; let i = index">
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td>
+            <select name="language" id="language">
+              <option value="PROSPECT">PROSPECT</option>
+              <option value="OTP_APPROVED">OTP APPROVED</option>
+              <option value="PRE_APPROVED_PROSPECT">
+                PRE APPROVED PROSPECT
+              </option>
+              <option value="CHECKED_IN">CHECKED IN</option>
+              <option value="PROSPECT_REJECTED">PROSPECT REJECTED</option>
+              <option value="REASSIGNMENT_PENDING">REASSIGNMENT PENDING</option>
+              <option value="REASSIGNMENT_FAILED">REASSIGNMENT FAILED</option>
+              <option value="REASSIGNED">REASSIGNED</option>
+              <option value="HARD_CLOSURE">HARD CLOSURE</option>
+              <option value="FSE_REASSIGNED">FSE REASSIGNED</option>
+              <option value="THREE_WAY_CALL">THREE WAY CALL</option>
+              <option value="INSTALLATION_PENDING">INSTALLATION PENDING</option>
+              <option value="INSTALLED">INSTALLED</option>
+              <option value="INSTALLATION_VERIFIED">
+                INSTALLATION VERIFIED
+              </option>
+              <option value="INSTALLATION_REATTEMPT">
+                INSTALLATION REATTEMPT
+              </option>
+            </select>
+          </td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td>
+            <button (click)="deleteRow(i)"><i class="fa fa-trash"></i></button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </form>
+</body>
+</html>

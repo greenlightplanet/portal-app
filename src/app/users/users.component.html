@@ -1,0 +1,68 @@
+<html>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
+  <body>
+    <form (ngSubmit)="saveTable(row)">
+      <div class="button-container">
+        <div id="butn">
+          <button class="btn btn-primary mx-auto" (click)="addTable()" id="button1">
+          Add Row</button>
+          <button class="btn btn-primary mx-auto" (click)="saveTable(row)" id="button2" type="submit">
+          Save Data</button>
+          <br />
+        </div>
+      </div>
+      <br />
+      <div style="overflow-x:scroll;">
+        <table class="style" >
+          <tr>
+            <th>email</th>
+            <th>login_type</th>
+            <th>password</th>
+            <th>name</th>
+            <th>phone</th>
+            <th>role</th>
+            <th>country</th>
+            <th>zone</th>
+            <th>region</th>
+            <th>area</th>
+            <th>territory</th>
+            <th>super_user</th>
+            <th>latitude</th>
+            <th>longitude</th>
+            <th>area_id</th>
+            <th>module</th>
+            <!-- <th>delete_row</th> -->
+            <th>fetch_row</th>
+          </tr>
+          <tr *ngFor="let item of row; let i = index">
+            <td><input [(ngModel)]="item.email" name="email" type="text" /></td>
+            <td><input [(ngModel)]="item.login_type" name="login_type" type="text" /></td>
+            <td><input [(ngModel)]="item.password" name="password" type="text" /></td>
+            <td><input [(ngModel)]="item.name" name="name" type="text" /></td>
+            <td><input [(ngModel)]="item.phone" name="phone" type="text" /></td>
+            <td><input [(ngModel)]="item.role" name="role" type="text" /></td>
+            <td><input [(ngModel)]="item.country" name="country" type="text" /></td>
+            <td><input [(ngModel)]="item.zone" name="zone" type="text" /></td>
+            <td><input [(ngModel)]="item.region" name="region" type="text" /></td>
+            <td><input [(ngModel)]="item.area" name="area" type="text" /></td>
+            <td><input [(ngModel)]="item.territory" name="territory" type="text" /></td>
+            <td><input [(ngModel)]="item.super_user" name="super_user" type="text" /></td>
+            <td><input [(ngModel)]="item.area_id" name="area_id" type="text" /></td>
+            <td><input [(ngModel)]="item.latitude" name="latitude" type="text" /></td>
+            <td><input [(ngModel)]="item.longitude" name="longitude" type="text" /></td>
+            <td><input [(ngModel)]="item.module" name="module" type="text" /></td>
+            <!-- <td >
+              <button (click)="deleteRow(i)"><i class="fa fa-trash" style="padding: center;"></i></button>
+            </td> -->
+            <td >
+              <button (click)="getData()"><i class="fa fa-refresh"></i></button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </form>
+  </body>
+</html>

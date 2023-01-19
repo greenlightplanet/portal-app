@@ -1,0 +1,42 @@
+<html>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
+  <body>
+    <form (ngSubmit)="saveTable()">
+      <div class="button-container">
+        <div id="butn">
+          <button class="btn btn-primary mx-auto" (click)="addTable()" id="button1">
+          Add Row</button>
+          <button class="btn btn-primary mx-auto" (click)="saveTable()" id="button2" type="submit">
+          Save Data</button>
+          <br />
+        </div>
+      </div>
+      <br />
+      <div style="overflow-x:scroll;">
+        <table class="style" >
+          <tr>
+            <th>product_name</th>
+            <th>country</th>
+            <th>image_names</th>
+            <th>image_urls</th>
+            <th>category</th>
+          <th></th>
+        </tr>
+        <tr *ngFor="let item of row; let i = index">
+          <td><input [(ngModel)]="product_name" name="product_name" type="text" /></td>
+          <td><input [(ngModel)]="country" name="country" type="text" /></td>
+          <td><input [(ngModel)]="image_names" name="image_names" type="text" /></td>
+          <td><input [(ngModel)]="image_urls" name="image_urls" type="text" /></td>
+          <td><input [(ngModel)]="category" name="category" type="text" /></td>
+          <td>
+            <button (click)="deleteRow(i)"><i class="fa fa-trash"></i></button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </form>
+</body>
+</html>
