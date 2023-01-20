@@ -4,58 +4,52 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
   />
   <body>
-    <form (ngSubmit)="saveTable()">
       <div class="button-container">
         <div id="butn">
-          <button class="btn btn-primary mx-auto" (click)="addTable()" id="button1">
+          <button class="btn btn-primary mx-auto" (click)="addRow()" id="button1">
           Add Row</button>
-          <button class="btn btn-primary mx-auto" (click)="saveTable()" id="button2" type="submit">
-          Save Data</button>
-          <br />
         </div>
       </div>
       <br />
-    <div style="overflow-x:scroll;">
+      <div style="overflow-x:scroll;">
       <table class="style">
         <tr>
-            <th>fse_angaza_id</th>
-            <th>prospect_id</th>
-            <th>installation_picture</th>
-            <th>latitude</th>
-            <th>longitude</th>
-            <th>distance</th>
-            <th>accuracy</th>
-            <th>attempt</th>
-            <th>country</th>
-            <th>created_at</th>
-            <th>updated_at</th>
-            <th>image_name</th>
-            <th>is_rejected</th>
-            <th>rejection_attempt</th>
-            <th>delete_row</th>
-            <th>load_row</th>
+          <th>fetch_row</th>
+          <th>delete_row</th>
+          <th>save_row</th>
+          <th>update_row</th>
+          <th>fse_angaza_id</th>
+          <th>prospect_id</th>
+          <th>installation_picture</th>
+          <th>latitude</th>
+          <th>longitude</th>
+          <th>distance</th>
+          <th>accuracy</th>
+          <th>attempt</th>
+          <th>country</th>
+          <th>image_name</th>
+          <th>is_rejected</th>
+          <th>rejection_attempt</th>
         </tr>
-        <tr *ngFor="let item of row; let i = index">
-          <td><input type="text" /></td>
-          <td><input type="text" /></td>
-          <td><input type="text" /></td>
-          <td><input type="text" /></td>
-          <td><input type="text" /></td>
-          <td><input type="text" /></td>
-          <td><input type="text" /></td>
-          <td><input type="text" /></td>
-          <td><input type="text" /></td>
-          <td><input type="text" /></td>
-          <td><input type="text" /></td>
-          <td><input type="text" /></td>
-          <td><input type="text" /></td>
-          <td><input type="text" /></td>
-          <td>
-            <button (click)="deleteRow(i)"><i class="fa fa-trash"></i></button>
-          </td>
+        <tr *ngFor="let row of rows; let i = index">
+          <td><button (click)="getData(i)"><i class="fa fa-refresh"></i></button></td>
+          <td><button (click)="deleteRow(i)"><i class="fa fa-trash"></i></button></td>
+          <td><button (click)="saveData(row)"><i class="fa fa-floppy-o"></i></button></td>
+          <td><button (click)="updateData(row)"><i class="fa fa-pencil-square"></i></button></td>
+          <td><input [(ngModel)]="row.fse_angaza_id" name="fse_angaza_id" type="text" /></td>
+          <td><input [(ngModel)]="row.prospect_id" name="prospect_id" type="text" /></td>
+          <td><input [(ngModel)]="row.installation_picture" name="installation_picture" type="text" /></td>
+          <td><input [(ngModel)]="row.latitude" name="latitude" type="text" /></td>
+          <td><input [(ngModel)]="row.longitude" name="longitude" type="text" /></td>
+          <td><input [(ngModel)]="row.distance" name="distance" type="text" /></td>
+          <td><input [(ngModel)]="row.accuracy" name="accuracy" type="text" /></td>
+          <td><input [(ngModel)]="row.attempt" name="attempt" type="text" /></td>
+          <td><input [(ngModel)]="row.country" name="country" type="text" /></td>
+          <td><input [(ngModel)]="row.image_name" name="image_name" type="text" /></td>
+          <td><input [(ngModel)]="row.is_rejected" name="is_rejected" type="text" /></td>
+          <td><input [(ngModel)]="row.rejection_attempt" name="rejection_attempt" type="text" /></td>
         </tr>
       </table>
     </div>
-  </form>
 </body>
 </html>

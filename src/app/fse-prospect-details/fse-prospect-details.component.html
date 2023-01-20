@@ -4,20 +4,20 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
   />
   <body>
-    <form (ngSubmit)="saveTable()">
       <div class="button-container">
         <div id="butn">
-          <button class="btn btn-primary mx-auto" (click)="addTable()" id="button1">
+          <button class="btn btn-primary mx-auto" (click)="addRow()" id="button1">
           Add Row</button>
-          <button class="btn btn-primary mx-auto" (click)="saveTable()" id="button2" type="submit">
-          Save Data</button>
-          <br />
         </div>
       </div>
       <br />
-    <div style="overflow-x:scroll;">
+      <div style="overflow-x:scroll;">
       <table class="style">
         <tr>
+          <th>fetch_row</th>
+          <th>delete_row</th>
+          <th>save_row</th>
+          <th>update_row</th>
           <th>fse_angaza_id</th>
           <th>prospect_id</th>
           <th>status</th>
@@ -27,24 +27,43 @@
           <th>message</th>
           <th>attempt</th>
           <th>country</th>
-          <th></th>
         </tr>
-        <tr *ngFor="let item of row; let i = index">
-          <td><input [(ngModel)]="fse_angaza_id" name="fse_angaza_id" type="text" /></td>
-          <td><input [(ngModel)]="prospect_id" name="prospect_id" type="text" /></td>
-          <td><input [(ngModel)]="status" name="status" type="text" /></td>
-          <td><input [(ngModel)]="status_updated_at" name="status_updated_at" type="text" /></td>
-          <td><input [(ngModel)]="ticket_id" name="ticket_id" type="text" /></td>
-          <td><input [(ngModel)]="approved" name="approved" type="text" /></td>
-          <td><input [(ngModel)]="message" name="message" type="text" /></td>
-          <td><input [(ngModel)]="attempt" name="attempt" type="text" /></td>
-          <td><input [(ngModel)]="country" name="country" type="text" /></td>
+        <tr *ngFor="let row of rows; let i = index">
+          <td><button (click)="getData(i)"><i class="fa fa-refresh"></i></button></td>
+          <td><button (click)="deleteRow(i)"><i class="fa fa-trash"></i></button></td>
+          <td><button (click)="saveData(row)"><i class="fa fa-floppy-o"></i></button></td>
+          <td><button (click)="updateData(row)"><i class="fa fa-pencil-square"></i></button></td>
+          <td><input [(ngModel)]="row.fse_angaza_id" name="fse_angaza_id" type="text" /></td>
+          <td><input [(ngModel)]="row.prospect_id" name="prospect_id" type="text" /></td>
           <td>
-            <button (click)="deleteRow(i)"><i class="fa fa-trash"></i></button>
+            <select [(ngModel)]="row.status" name="status">
+              <option value="" disabled selected>Select a status</option>
+              <option value="PROSPECT">PROSPECT</option>
+              <option value="OTP_APPROVED">OTP APPROVED</option>
+              <option value="PRE_APPROVED_PROSPECT">PRE APPROVED PROSPECT</option>
+              <option value="CHECKED_IN">CHECKED IN</option>
+              <option value="PROSPECT_REJECTED">PROSPECT REJECTED</option>
+              <option value="REASSIGNMENT_PENDING">REASSIGNMENT PENDING</option>
+              <option value="REASSIGNMENT_FAILED">REASSIGNMENT FAILED</option>
+              <option value="REASSIGNED">REASSIGNED</option>
+              <option value="HARD_CLOSURE">HARD CLOSURE</option>
+              <option value="FSE_REASSIGNED">FSE REASSIGNED</option>
+              <option value="THREE_WAY_CALL">THREE WAY CALL</option>
+              <option value="INSTALLATION_PENDING">INSTALLATION PENDING</option>
+              <option value="INSTALLED">INSTALLED</option>
+              <option value="INSTALLATION_VERIFIED">INSTALLATION VERIFIED</option>
+              <option value="INSTALLATION_REATTEMPT">INSTALLATION REATTEMPT</option>
+            </select>
           </td>
+          <td><input [(ngModel)]="row.status_updated_at" name="status_updated_at" type="text" /></td>
+          <td><input [(ngModel)]="row.ticket_id" name="ticket_id" type="text" /></td>
+          <td><input [(ngModel)]="row.approved" name="approved" type="text" /></td>
+          <td><input [(ngModel)]="row.message" name="message" type="text" /></td>
+          <td><input [(ngModel)]="row.attempt" name="attempt" type="text" /></td>
+          <td><input [(ngModel)]="row.country" name="country" type="text" /></td>
         </tr>
       </table>
     </div>
-  </form>
 </body>
 </html>
+

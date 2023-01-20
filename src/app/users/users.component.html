@@ -17,6 +17,7 @@
             <th>fetch_row</th>
             <th>delete_row</th>
             <th>save_row</th>
+            <th>update_row</th>
             <th>email</th>
             <th>login_type</th>
             <th>password</th>
@@ -38,6 +39,7 @@
             <td><button (click)="getData(i)"><i class="fa fa-refresh"></i></button></td>
             <td><button (click)="deleteRow(i)"><i class="fa fa-trash"></i></button></td>
             <td><button (click)="saveData(row)"><i class="fa fa-floppy-o"></i></button></td>
+            <td><button (click)="updateData(row)"><i class="fa fa-pencil-square"></i></button></td>
             <td><input [(ngModel)]="row.email" name="email" type="text" /></td>
             <td><input [(ngModel)]="row.login_type" name="login_type" type="text" /></td>
             <td><input [(ngModel)]="row.password" name="password" type="text" /></td>

@@ -1,27 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
-
+interface Data {
+  fse_angaza_id: string;
+  prospect_id: string;
+  status: string;
+  status_updated_at: string;
+  ticket_id: string;
+  approved: any;
+  message: any;
+  attempt: any;
+  country: string;
+}
 @Component({
   selector: 'app-fse-prospect-details',
   templateUrl: './fse-prospect-details.component.html',
   styleUrls: ['./fse-prospect-details.component.css']
 })
-export class FseProspectDetailsComponent {
-  isLoading = false;
-  fse_angaza_id: any;
-  prospect_id: any;
-  status: any;
-  status_updated_at: any;
-  ticket_id: any;
-  approved: any;
-  message: any;
-  attempt: any;
-  country: any;
-
-  constructor(private http: HttpClient) {}
-
-  row = [
+export class FseProspectDetailsComponent implements OnInit {
+  rows = [
     {
       fse_angaza_id: '',
       prospect_id: '',
@@ -31,12 +27,16 @@ export class FseProspectDetailsComponent {
       approved: '',
       message: '',
       attempt: '',
-      country: ''
-    }
+      country: '',
+    },
   ];
-  
-  addTable() {
-    const obj = {
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit() {}
+
+  addRow() {
+    this.rows.push({
       fse_angaza_id: '',
       prospect_id: '',
       status: '',
@@ -45,43 +45,92 @@ export class FseProspectDetailsComponent {
       approved: '',
       message: '',
       attempt: '',
-      country: ''
+      country: '',
+    });
+  }
+
+  // getData(index: number) {
+  //   this.rows.forEach((row, index) => {
+  //   const prospect_id = this.rows[index].prospect_id;
+  //   this.http
+  //     .get<{
+  //       fse_angaza_id: any;
+  //       prospect_id: any;
+  //       status: any;
+  //       status_updated_at: any;
+  //       ticket_id: any;
+  //       approved: any;
+  //       message: any;
+  //       attempt: any;
+  //       country: any;
+  //     }>(
+  //       `http://localhost:8000/amigo/v1.0/workbench-tables/fse-prospect-details?prospect_id=${prospect_id}`
+  //     )
+  //     .subscribe((data) => {
+  //       this.rows[index] = data;
+  //     });
+  //   });
+  // }
+
+  // getData(index: number) {
+  //   this.rows.forEach((currentRow, currentIndex) => {
+  //     const prospect_id = currentRow.prospect_id;
+  //     this.http
+  //       .get<Data[]>(
+  //         `http://localhost:8000/amigo/v1.0/workbench-tables/fse-prospect-details?prospect_id=${prospect_id}`
+  //       )
+  //       .subscribe((data) => {
+  //         this.rows[currentIndex] = data[0];
+  //       });
+  //   });
+  // }
+//   getData(index: number) {
+//     const prospect_id = this.rows[index].prospect_id;
+//     this.http
+//         .get<Data[]>(`http://localhost:8000/amigo/v1.0/workbench-tables/fse-prospect-details?prospect_id=${prospect_id}`)
+//         .subscribe((data) => {
+//             for (let i = 0; i < data.length; i++) {
+//                 this.rows.push(data[i]);
+//             }
+//         });
+// }
+
+getData(index: number) {
+  this.rows.forEach((currentRow, currentIndex) => {
+    const prospect_id = currentRow.prospect_id;
+    this.http
+      .get<Data[]>(
+        `http://localhost:8000/amigo/v1.0/workbench-tables/fse-prospect-details?prospect_id=${prospect_id}`
+      )
+      .subscribe((data) => {
+        this.rows[currentIndex] = data[0];
+        if (data.length > 1) {
+          for (let i = 1; i < data.length; i++) {
+            this.rows.push(data[i]);
+          }
+        }
+      });
+  });
+}
+
+
+
+  saveData(row : any) {
+      this.http
+        .post(`http://localhost:8000/amigo/v1.0/workbench-tables/fse-prospect-details/`, row)
+        .subscribe();
     }
-    this.row.push(obj)
-  }
-  saveTable() {
-    this.isLoading = false;
-    const data = {fse_angaza_id: this.fse_angaza_id, prospect_id: this.prospect_id, status: this.status, status_updated_at: this.status_updated_at, ticket_id: this.ticket_id, approved: this.approved, message: this.message, attempt: this.attempt, country: this.country};
 
-    this.http.post('http://localhost:8000/amigo/v1.0/user-angular/', data).subscribe(
-      (response) => {
-        this.row = [];
-        this.isLoading = false;
-        this.showSuccessDialog();
-      },
-      (error) => {
-        this.isLoading = false;
-        this.showErrorDialog(error);
-      }
-    );
-    this.addTable();
-
+  updateData(row : any) {
+      this.http
+        .put(
+          `http://localhost:8000/amigo/v1.0/workbench-tables/fse-prospect-details/?prospect_id=${row.prospect_id}`,
+          row
+        )
+        .subscribe();
   }
 
-  showSuccessDialog() {
-    // Use Angular Material or any other library to display a success dialog
-    console.log('Successfully saved!');
-  }
-  
-  showErrorDialog(error: any) {
-    // Use Angular Material or any other library to display a error dialog
-    console.log('Error:', error);
-  }
-  
-  deleteRow(x: number){
-    var delBtn = confirm(" Do you want to delete ?");
-    if ( delBtn == true ) {
-      this.row.splice(x, 1 );
-    }
+  deleteRow(index: number) {
+    this.rows.splice(index, 1);
   }
 }

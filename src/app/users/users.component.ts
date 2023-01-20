@@ -101,19 +101,18 @@ export class UsersComponent implements OnInit{
   }
 
   saveData(row : any) {
-    const email = row.email;
-    if (row.email) {
+      this.http
+        .post(`http://localhost:8000/amigo/v1.0/workbench-tables/staff-users/`, row)
+        .subscribe();
+    }
+
+  updateData(row : any) {
       this.http
         .put(
           `http://localhost:8000/amigo/v1.0/workbench-tables/staff-users/?email_id=${row.email}`,
           row
         )
         .subscribe();
-    } else {
-      this.http
-        .post(`http://localhost:8000/amigo/v1.0/workbench-tables/staff-users/`, row)
-        .subscribe();
-    }
   }
 
   deleteRow(index: number) {
