@@ -12,6 +12,8 @@ import { UsersComponent } from './users/users.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // import { SharedService } from './shared.service';
 import { FseProspectDetailsComponent } from './fse-prospect-details/fse-prospect-details.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { FseProspectDetailsComponent } from './fse-prospect-details/fse-prospect
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxSpinnerModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

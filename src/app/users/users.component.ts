@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { FormControl, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface User{
   email: any;
@@ -26,6 +28,10 @@ interface User{
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit{
+
+emailControl = new FormControl('', [Validators.required, Validators.email]);
+loading = false;
+updateLoading = false;
   rows = [
     {
       email: '',
@@ -47,7 +53,7 @@ export class UsersComponent implements OnInit{
     },
   ];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private _snackBar: MatSnackBar) {}
 
   ngOnInit() {}
 
@@ -73,6 +79,7 @@ export class UsersComponent implements OnInit{
   }
 
   getData(index: number) {
+    this.loading = true;
     const email = this.rows[index].email;
     this.http
       .get<{
@@ -97,6 +104,8 @@ export class UsersComponent implements OnInit{
       )
       .subscribe((data) => {
         this.rows[index] = data;
+
+        this.loading = false;
       });
   }
 
@@ -107,13 +116,47 @@ export class UsersComponent implements OnInit{
     }
 
   updateData(row : any) {
+      this.updateLoading = false
       this.http
         .put(
           `http://localhost:8000/amigo/v1.0/workbench-tables/staff-users/?email_id=${row.email}`,
           row
         )
-        .subscribe();
+        .subscribe(() => {
+          this.updateLoading = false;
+        });
   }
+// updateData(row : any) {
+//     this.http
+//       .put(
+//         `http://localhost:8000/amigo/v1.0/workbench-tables/staff-users/?email_id=${row.email}`,
+//         row
+//       )
+//       .subscribe(() => {
+//         this._snackBar.open('Successfully updated', '', {
+//           duration: 2000,
+//         });
+//         this.rows[this.rows.indexOf(row)]={
+//         email : '',
+//         login_type : '',
+//         password : '',
+//         name : '',
+//         phone : '',
+//         role : '',
+//         country : '',
+//         zone : '',
+//         region : '',
+//         area : '',
+//         territory : '',
+//         super_user : '',
+//         area_id : '',
+//         latitude : '',
+//         longitude : '',
+//         module : ''
+
+//         }
+//       });
+// }
 
   deleteRow(index: number) {
     this.rows.splice(index, 1);

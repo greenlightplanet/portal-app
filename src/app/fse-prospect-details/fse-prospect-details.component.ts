@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { FormControl, Validators } from '@angular/forms';
 interface Data {
   fse_angaza_id: string;
   prospect_id: string;
@@ -17,6 +18,8 @@ interface Data {
   styleUrls: ['./fse-prospect-details.component.css']
 })
 export class FseProspectDetailsComponent implements OnInit {
+  prospectControl = new FormControl('', [Validators.required, Validators.email]);
+  loading = false;
   rows = [
     {
       fse_angaza_id: '',
@@ -96,6 +99,7 @@ export class FseProspectDetailsComponent implements OnInit {
 // }
 
 getData(index: number) {
+  this.loading = true;
   this.rows.forEach((currentRow, currentIndex) => {
     const prospect_id = currentRow.prospect_id;
     this.http
@@ -109,6 +113,8 @@ getData(index: number) {
             this.rows.push(data[i]);
           }
         }
+
+        this.loading = false;
       });
   });
 }
@@ -121,14 +127,14 @@ getData(index: number) {
         .subscribe();
     }
 
-  updateData(row : any) {
-      this.http
-        .put(
-          `http://localhost:8000/amigo/v1.0/workbench-tables/fse-prospect-details/?prospect_id=${row.prospect_id}`,
-          row
-        )
-        .subscribe();
-  }
+  // updateData(row : any) {
+  //     this.http
+  //       .put(
+  //         `http://localhost:8000/amigo/v1.0/workbench-tables/fse-prospect-details/?prospect_id=${row.prospect_id}`,
+  //         row
+  //       )
+  //       .subscribe();
+  // }
 
   deleteRow(index: number) {
     this.rows.splice(index, 1);

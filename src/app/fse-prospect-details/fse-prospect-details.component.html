@@ -17,7 +17,7 @@
           <th>fetch_row</th>
           <th>delete_row</th>
           <th>save_row</th>
-          <th>update_row</th>
+          <!-- <th>update_row</th> -->
           <th>fse_angaza_id</th>
           <th>prospect_id</th>
           <th>status</th>
@@ -30,11 +30,15 @@
         </tr>
         <tr *ngFor="let row of rows; let i = index">
           <td><button (click)="getData(i)"><i class="fa fa-refresh"></i></button></td>
+          <div *ngIf="loading">Loading...</div>
           <td><button (click)="deleteRow(i)"><i class="fa fa-trash"></i></button></td>
           <td><button (click)="saveData(row)"><i class="fa fa-floppy-o"></i></button></td>
-          <td><button (click)="updateData(row)"><i class="fa fa-pencil-square"></i></button></td>
+          <!-- <td><button (click)="updateData(row)"><i class="fa fa-pencil-square"></i></button></td> -->
           <td><input [(ngModel)]="row.fse_angaza_id" name="fse_angaza_id" type="text" /></td>
-          <td><input [(ngModel)]="row.prospect_id" name="prospect_id" type="text" /></td>
+          <td><input [(ngModel)]="row.prospect_id" name="prospect_id" type="text" />
+            <div *ngIf="prospectControl.hasError('required')">Prospect Id is required</div>
+            <div *ngIf="prospectControl.hasError('email')">Prospect Id is invalid</div>
+          </td>
           <td>
             <select [(ngModel)]="row.status" name="status">
               <option value="" disabled selected>Select a status</option>

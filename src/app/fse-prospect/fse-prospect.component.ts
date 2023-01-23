@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-fse-prospect',
@@ -7,6 +8,9 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./fse-prospect.component.css']
 })
 export class FseProspectComponent implements OnInit{
+  prospectControl = new FormControl('', [Validators.required, Validators.email]);
+  loading = false;
+  updateLoading = false;
   rows = [
     {
       prospect_id : '',
@@ -70,6 +74,7 @@ export class FseProspectComponent implements OnInit{
   }
 
   getData(index: number) {
+    this.loading = true;
     const prospect_id = this.rows[index].prospect_id;
     this.http
       .get<{
@@ -102,6 +107,8 @@ export class FseProspectComponent implements OnInit{
       )
       .subscribe((data) => {
         this.rows[index] = data;
+
+        this.loading = false;
       });
   }
 
@@ -112,12 +119,15 @@ export class FseProspectComponent implements OnInit{
     }
 
   updateData(row : any) {
+    this.updateLoading = false
       this.http
         .put(
           `http://localhost:8000/amigo/v1.0/workbench-tables/fse-prospect/?prospect_id=${row.prospect_id}`,
           row
         )
-        .subscribe();
+        .subscribe(() => {
+          this.updateLoading = false;
+        });
   }
 
   deleteRow(index: number) {

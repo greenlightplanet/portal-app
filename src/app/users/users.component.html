@@ -36,11 +36,21 @@
             <th>force_logout</th>
           </tr>
           <tr *ngFor="let row of rows; let i = index">
-            <td><button (click)="getData(i)"><i class="fa fa-refresh"></i></button></td>
+            <!-- <td><button (click)="getData(i)"><i class="fa fa-refresh"></i></button></td> -->
+            <td>
+              <button (click)="getData(i)"><i class="fa fa-refresh"></i></button>
+              <div *ngIf="loading">Loading...</div>
+          </td>
             <td><button (click)="deleteRow(i)"><i class="fa fa-trash"></i></button></td>
             <td><button (click)="saveData(row)"><i class="fa fa-floppy-o"></i></button></td>
             <td><button (click)="updateData(row)"><i class="fa fa-pencil-square"></i></button></td>
-            <td><input [(ngModel)]="row.email" name="email" type="text" /></td>
+            <div *ngIf="updateLoading">Loading...</div>
+            <!-- <td><input [(ngModel)]="row.email" name="email" type="text" /></td> -->
+            <td>
+              <input [(ngModel)]="row.email" name="email" type="text" [formControl]="emailControl" />
+              <div *ngIf="emailControl.hasError('required')">Email is required</div>
+              <div *ngIf="emailControl.hasError('email')">Email is invalid</div>
+            </td>
             <td><input [(ngModel)]="row.login_type" name="login_type" type="text" /></td>
             <td><input [(ngModel)]="row.password" name="password" type="text" /></td>
             <td><input [(ngModel)]="row.name" name="name" type="text" /></td>
