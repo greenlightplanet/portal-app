@@ -12,13 +12,21 @@
       </div>
       <br />
       <div style="overflow-x:scroll;">
+        <ngx-spinner
+      bdColor = "rgba(51, 51, 51, 0.8)"
+      size = "medium"
+      color = "#fff"
+      type = "ball-scale-multiple"
+      [fullScreen]="true">
+      <p style="color: white">Loading...</p>
+    </ngx-spinner>
         <table class="style" >
           <tr>
             <th>fetch_row</th>
             <th>delete_row</th>
             <th>save_row</th>
             <th>update_row</th>
-            <th>email</th>
+            <th>email<div *ngIf="emailControl.hasError('required')" style="color: red; font-size:small;">*Email Id is required</div></th>
             <th>login_type</th>
             <th>password</th>
             <th>name</th>
@@ -32,25 +40,13 @@
             <th>super_user</th>
             <th>latitude</th>
             <th>longitude</th>
-            <th>area_id</th>
-            <th>force_logout</th>
           </tr>
           <tr *ngFor="let row of rows; let i = index">
-            <!-- <td><button (click)="getData(i)"><i class="fa fa-refresh"></i></button></td> -->
-            <td>
-              <button (click)="getData(i)"><i class="fa fa-refresh"></i></button>
-              <div *ngIf="loading">Loading...</div>
-          </td>
+            <td><button (click)="getData(i)"><i class="fa fa-refresh"></i></button></td>
             <td><button (click)="deleteRow(i)"><i class="fa fa-trash"></i></button></td>
             <td><button (click)="saveData(row)"><i class="fa fa-floppy-o"></i></button></td>
             <td><button (click)="updateData(row)"><i class="fa fa-pencil-square"></i></button></td>
-            <div *ngIf="updateLoading">Loading...</div>
-            <!-- <td><input [(ngModel)]="row.email" name="email" type="text" /></td> -->
-            <td>
-              <input [(ngModel)]="row.email" name="email" type="text" [formControl]="emailControl" />
-              <div *ngIf="emailControl.hasError('required')">Email is required</div>
-              <div *ngIf="emailControl.hasError('email')">Email is invalid</div>
-            </td>
+            <td><input [(ngModel)]="row.email" name="email" type="text" [formControl]="emailControl"/></td>
             <td><input [(ngModel)]="row.login_type" name="login_type" type="text" /></td>
             <td><input [(ngModel)]="row.password" name="password" type="text" /></td>
             <td><input [(ngModel)]="row.name" name="name" type="text" /></td>
@@ -62,10 +58,8 @@
             <td><input [(ngModel)]="row.area" name="area" type="text" /></td>
             <td><input [(ngModel)]="row.territory" name="territory" type="text" /></td>
             <td><input [(ngModel)]="row.super_user" name="super_user" type="text" /></td>
-            <td><input [(ngModel)]="row.area_id" name="area_id" type="text" /></td>
             <td><input [(ngModel)]="row.latitude" name="latitude" type="text" /></td>
             <td><input [(ngModel)]="row.longitude" name="longitude" type="text" /></td>
-            <td><input [(ngModel)]="row.module" name="module" type="text" /></td>
           </tr>
         </table>
       </div>

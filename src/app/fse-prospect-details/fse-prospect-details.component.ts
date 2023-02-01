@@ -1,25 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { DataService } from './data.service';
 import { FormControl, Validators } from '@angular/forms';
-interface Data {
-  fse_angaza_id: string;
-  prospect_id: string;
-  status: string;
-  status_updated_at: string;
-  ticket_id: string;
-  approved: any;
-  message: any;
-  attempt: any;
-  country: string;
-}
+import { NgxSpinnerService } from 'ngx-spinner';
+
 @Component({
   selector: 'app-fse-prospect-details',
   templateUrl: './fse-prospect-details.component.html',
   styleUrls: ['./fse-prospect-details.component.css']
 })
 export class FseProspectDetailsComponent implements OnInit {
+  errorMessage = '';
   prospectControl = new FormControl('', [Validators.required, Validators.email]);
-  loading = false;
   rows = [
     {
       fse_angaza_id: '',
@@ -34,7 +25,7 @@ export class FseProspectDetailsComponent implements OnInit {
     },
   ];
 
-  constructor(private http: HttpClient) {}
+  constructor(private dataService: DataService, private spinner: NgxSpinnerService) {}
 
   ngOnInit() {}
 
@@ -52,60 +43,11 @@ export class FseProspectDetailsComponent implements OnInit {
     });
   }
 
-  // getData(index: number) {
-  //   this.rows.forEach((row, index) => {
-  //   const prospect_id = this.rows[index].prospect_id;
-  //   this.http
-  //     .get<{
-  //       fse_angaza_id: any;
-  //       prospect_id: any;
-  //       status: any;
-  //       status_updated_at: any;
-  //       ticket_id: any;
-  //       approved: any;
-  //       message: any;
-  //       attempt: any;
-  //       country: any;
-  //     }>(
-  //       `http://localhost:8000/amigo/v1.0/workbench-tables/fse-prospect-details?prospect_id=${prospect_id}`
-  //     )
-  //     .subscribe((data) => {
-  //       this.rows[index] = data;
-  //     });
-  //   });
-  // }
-
-  // getData(index: number) {
-  //   this.rows.forEach((currentRow, currentIndex) => {
-  //     const prospect_id = currentRow.prospect_id;
-  //     this.http
-  //       .get<Data[]>(
-  //         `http://localhost:8000/amigo/v1.0/workbench-tables/fse-prospect-details?prospect_id=${prospect_id}`
-  //       )
-  //       .subscribe((data) => {
-  //         this.rows[currentIndex] = data[0];
-  //       });
-  //   });
-  // }
-//   getData(index: number) {
-//     const prospect_id = this.rows[index].prospect_id;
-//     this.http
-//         .get<Data[]>(`http://localhost:8000/amigo/v1.0/workbench-tables/fse-prospect-details?prospect_id=${prospect_id}`)
-//         .subscribe((data) => {
-//             for (let i = 0; i < data.length; i++) {
-//                 this.rows.push(data[i]);
-//             }
-//         });
-// }
-
 getData(index: number) {
-  this.loading = true;
+  this.spinner.show();
   this.rows.forEach((currentRow, currentIndex) => {
     const prospect_id = currentRow.prospect_id;
-    this.http
-      .get<Data[]>(
-        `http://localhost:8000/amigo/v1.0/workbench-tables/fse-prospect-details?prospect_id=${prospect_id}`
-      )
+    this.dataService.getData(prospect_id)
       .subscribe((data) => {
         this.rows[currentIndex] = data[0];
         if (data.length > 1) {
@@ -113,8 +55,14 @@ getData(index: number) {
             this.rows.push(data[i]);
           }
         }
-
-        this.loading = false;
+        setTimeout(() => {
+          this.spinner.hide();
+        }, 500);
+      },
+      (error) => {
+      this.errorMessage = error.error.error;
+      alert(this.errorMessage);
+      this.spinner.hide();
       });
   });
 }
@@ -122,10 +70,19 @@ getData(index: number) {
 
 
   saveData(row : any) {
-      this.http
-        .post(`http://localhost:8000/amigo/v1.0/workbench-tables/fse-prospect-details/`, row)
-        .subscribe();
-    }
+    this.spinner.show();
+    this.dataService.saveData(row).subscribe(
+      (data) => {
+        console.log(data);
+        this.spinner.hide();
+      },
+      (error) => {
+        this.errorMessage = error.error.error;
+        alert(this.errorMessage);
+        this.spinner.hide();
+      }
+    );
+  }
 
   // updateData(row : any) {
   //     this.http

@@ -12,14 +12,22 @@
       </div>
       <br />
       <div style="overflow-x:scroll;">
+        <ngx-spinner
+      bdColor = "rgba(51, 51, 51, 0.8)"
+      size = "medium"
+      color = "#fff"
+      type = "ball-scale-multiple"
+      [fullScreen]="true">
+      <p style="color: white">Loading...</p>
+    </ngx-spinner>
       <table class="style">
         <tr>
           <th>fetch_row</th>
           <th>delete_row</th>
           <th>save_row</th>
           <th>update_row</th>
+          <th>prospect_id<div *ngIf="prospectControl.hasError('required')" style="color: red; font-size:small;">*Prospect Id is required</div></th>
           <th>fse_angaza_id</th>
-          <th>prospect_id</th>
           <th>installation_picture</th>
           <th>latitude</th>
           <th>longitude</th>
@@ -36,8 +44,8 @@
           <td><button (click)="deleteRow(i)"><i class="fa fa-trash"></i></button></td>
           <td><button (click)="saveData(row)"><i class="fa fa-floppy-o"></i></button></td>
           <td><button (click)="updateData(row)"><i class="fa fa-pencil-square"></i></button></td>
+          <td><input [(ngModel)]="row.prospect_id" name="prospect_id" type="text" [formControl]="prospectControl"/></td>
           <td><input [(ngModel)]="row.fse_angaza_id" name="fse_angaza_id" type="text" /></td>
-          <td><input [(ngModel)]="row.prospect_id" name="prospect_id" type="text" /></td>
           <td><input [(ngModel)]="row.installation_picture" name="installation_picture" type="text" /></td>
           <td><input [(ngModel)]="row.latitude" name="latitude" type="text" /></td>
           <td><input [(ngModel)]="row.longitude" name="longitude" type="text" /></td>

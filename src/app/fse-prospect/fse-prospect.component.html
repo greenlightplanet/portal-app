@@ -12,13 +12,21 @@
       </div>
       <br />
       <div style="overflow-x:scroll;">
+        <ngx-spinner
+      bdColor = "rgba(51, 51, 51, 0.8)"
+      size = "medium"
+      color = "#fff"
+      type = "ball-scale-multiple"
+      [fullScreen]="true">
+      <p style="color: white">Loading...</p>
+    </ngx-spinner>
         <table class="style">
           <tr>
             <th>fetch_row</th>
             <th>delete_row</th>
             <th>save_row</th>
             <th>update_row</th>
-            <th>prospect_id</th>
+            <th>prospect_id<div *ngIf="prospectControl.hasError('required')" style="color: red; font-size:small;">*Prospect Id is required</div></th>
             <th>fse_angaza_id</th>
             <th>agent_user_name</th>
             <th>customer_name</th>
@@ -45,14 +53,11 @@
           </tr>
           <tr *ngFor="let row of rows; let i = index">
             <td><button (click)="getData(i)"><i class="fa fa-refresh"></i></button></td>
-            <div *ngIf="loading">Loading...</div>
             <td><button (click)="deleteRow(i)"><i class="fa fa-trash"></i></button></td>
             <td><button (click)="saveData(row)"><i class="fa fa-floppy-o"></i></button></td>
             <td><button (click)="updateData(row)"><i class="fa fa-pencil-square"></i></button></td>
-            <div *ngIf="updateLoading">Loading...</div>
             <td><input [(ngModel)]="row.prospect_id" name="prospect_id" type="text" [formControl]="prospectControl" />
-              <div *ngIf="prospectControl.hasError('required')">Prospect Id is required</div>
-              <div *ngIf="prospectControl.hasError('email')">Prospect Id is invalid</div>
+              
             </td>
             <td><input [(ngModel)]="row.fse_angaza_id" name="fse_angaza_id" type="text" /></td>
             <td><input [(ngModel)]="row.agent_user_name" name="agent_user_name" type="text" /></td>
@@ -77,7 +82,6 @@
                 <option value="INSTALLATION_REATTEMPT">INSTALLATION REATTEMPT</option>
               </select>
             </td>
-            <!-- <td><input [(ngModel)]="row.status" name="status" type="text" /></td> -->
             <td><input [(ngModel)]="row.customer_phone_number" name="customer_phone_number" type="text" /></td>
             <td><input [(ngModel)]="row.customer_secondary_phone_number" name="customer_secondary_phone_number" type="text" /></td>
             <td><input [(ngModel)]="row.customer_address" name="customer_address" type="text" /></td>
@@ -87,9 +91,8 @@
             <td><input [(ngModel)]="row.otp" name="otp" type="text" /></td>
             <td><input [(ngModel)]="row.unsuccessful_otp_attempts" name="unsuccessful_otp_attempts" type="text" /></td>
             <td><input [(ngModel)]="row.installation_attempted" name="installation_attempted" type="text" /></td>
-            <!-- <td><input [(ngModel)]="row.body" name="body" type="text" /></td> -->
-            <td><textarea [(ngModel)]="row.body" name="body" type="text" ></textarea></td>
-            <td><input [(ngModel)]="row.body_registration" name="body_registration" type="text" /></td>
+            <td><textarea [(ngModel)]="row.body" name="body" type="text"  style="font-size: small;"></textarea></td>
+            <td><textarea [(ngModel)]="row.body_registration" name="body_registration" type="text"  style="font-size: small;"></textarea></td>
             <td><input [(ngModel)]="row.latitude" name="latitude" type="text" /></td>
             <td><input [(ngModel)]="row.longitude" name="longitude" type="text" /></td>
             <td><input [(ngModel)]="row.checkin_accuracy" name="checkin_accuracy" type="text" /></td>

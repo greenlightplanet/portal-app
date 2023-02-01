@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
+import { NgModule } from '@angular/core';
 
 @Component({
   selector: 'app-tables',
   templateUrl: './tables.component.html',
   styleUrls: ['./tables.component.css']
 })
+
 export class TablesComponent {
   options = [
     { value: '', name: 'Please select a Table' },

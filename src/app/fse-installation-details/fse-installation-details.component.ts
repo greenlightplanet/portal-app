@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { DataService } from './data.service';
+import { FormControl, Validators } from '@angular/forms';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-fse-installation-details',
@@ -7,6 +9,8 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./fse-installation-details.component.css']
 })
 export class FseInstallationDetailsComponent implements OnInit{
+  errorMessage = '';
+  prospectControl = new FormControl('', [Validators.required, Validators.email]);
   rows = [
     {
       fse_angaza_id: '',
@@ -24,7 +28,7 @@ export class FseInstallationDetailsComponent implements OnInit{
     },
   ];
 
-  constructor(private http: HttpClient) {}
+  constructor(private dataService: DataService, private spinner: NgxSpinnerService) {}
 
   ngOnInit() {}
 
@@ -46,42 +50,50 @@ export class FseInstallationDetailsComponent implements OnInit{
   }
 
   getData(index: number) {
+    this.spinner.show();
     const prospect_id = this.rows[index].prospect_id;
-    this.http
-      .get<{
-        fse_angaza_id: any;
-        prospect_id: any;
-        installation_picture: any;
-        latitude: any;
-        longitude: any;
-        distance: any;
-        accuracy: any;
-        attempt: any;
-        country: any;
-        image_name: any;
-        is_rejected: any;
-        rejection_attempt: any;
-      }>(
-        `http://localhost:8000/amigo/v1.0/workbench-tables/fse-installation-details?prospect_id=${prospect_id}`
-      )
+    this.dataService.getData(prospect_id)
       .subscribe((data) => {
         this.rows[index] = data;
+        setTimeout(() => {
+          this.spinner.hide();
+        }, 500);
+      },
+      (error) => {
+      this.errorMessage = error.error.error;
+      alert(this.errorMessage);
+      this.spinner.hide();
       });
-  }
+}
 
   saveData(row : any) {
-      this.http
-        .post(`http://localhost:8000/amigo/v1.0/workbench-tables/fse-installation-details/`, row)
-        .subscribe();
-    }
+    this.spinner.show();
+    this.dataService.saveData(row).subscribe(
+      (data) => {
+        console.log(data);
+        this.spinner.hide();
+      },
+      (error) => {
+        this.errorMessage = error.error.error;
+        alert(this.errorMessage);
+        this.spinner.hide();
+      }
+    );
+  }
 
   updateData(row : any) {
-      this.http
-        .put(
-          `http://localhost:8000/amigo/v1.0/workbench-tables/fse-installation-details/?prospect_id=${row.prospect_id}`,
-          row
-        )
-        .subscribe();
+    this.spinner.show();
+    this.dataService.updateData(row).subscribe(
+      (data) => {
+        console.log(data);
+        this.spinner.hide();
+      },
+      (error) => {
+        this.errorMessage = error.error.error;
+        alert(this.errorMessage);
+        this.spinner.hide();
+      }
+    );
   }
 
   deleteRow(index: number) {

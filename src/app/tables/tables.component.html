@@ -1,17 +1,3 @@
-<!-- <div class="dropdown"> -->
-    <!-- <button class="dropbtn">Tables</button> -->
-    <!-- <div class="dropdown-content">
-      <a href="#">fse-prospect</a>
-      <a href="#">fse-installation-details</a>
-      <a href="#">fse-prospect-product-images</a>
-      <a href="#">staff-users</a>
-    </div> -->
-  <!-- </div> -->
-<!-- <app-fse-prospect></app-fse-prospect>
-<app-fse-installation-details></app-fse-installation-details>
-<app-fse-prospect-product-images></app-fse-prospect-product-images>
-<app-users></app-users> -->
-
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 <nav class="navbar navbar-dark">
   <div class="container">
@@ -20,14 +6,8 @@
     </a>
   </div>
 </nav>
-<!-- Just an image -->
-<!-- <nav class="navbar navbar-light bg-light">
-  <a class="navbar-brand" href="#">
-  </a>
-</nav> -->
 <div class="container-fluid">
   <select [(ngModel)]="selectedOption" class="form-select" aria-label="Disabled select example" >
-    <!-- <option value="" selectedOption>Please select a Table</option> -->
     <option *ngFor="let option of options" [value]="option.value">{{ option.name }}</option>
   </select>
 

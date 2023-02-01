@@ -12,14 +12,21 @@
       </div>
       <br />
       <div style="overflow-x:scroll;">
+        <ngx-spinner
+      bdColor = "rgba(51, 51, 51, 0.8)"
+      size = "medium"
+      color = "#fff"
+      type = "ball-scale-multiple"
+      [fullScreen]="true">
+      <p style="color: white">Loading...</p>
+    </ngx-spinner>
         <table class="style" >
           <tr>
             <th>fetch_row</th>
             <th>delete_row</th>
             <th>save_row</th>
             <th>update_row</th>
-            <th>id</th>
-            <th>product_name</th>
+            <th>product_name<div *ngIf="productNameControl.hasError('required')" style="color: red; font-size:small;">*Product Name is required</div></th>
             <th>country</th>
             <th>image_names</th>
             <th>image_urls</th>
@@ -30,8 +37,7 @@
           <td><button (click)="deleteRow(i)"><i class="fa fa-trash"></i></button></td>
           <td><button (click)="saveData(row)"><i class="fa fa-floppy-o"></i></button></td>
           <td><button (click)="updateData(row)"><i class="fa fa-pencil-square"></i></button></td>
-          <td><input [(ngModel)]="row.id" name="id" name="id" type="text" /></td>
-          <td><input [(ngModel)]="row.product_name" name="product_name" type="text" /></td>
+          <td><input [(ngModel)]="row.product_name" name="product_name" type="text" [formControl]="productNameControl" /></td>
           <td><input [(ngModel)]="row.country" name="country" type="text" /></td>
           <td><input [(ngModel)]="row.image_names" name="image_names" type="text" /></td>
           <td><input [(ngModel)]="row.image_urls" name="image_urls" type="text" /></td>

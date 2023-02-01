@@ -1,26 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { FormControl, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
-
-interface User{
-  email: any;
-  login_type: any;
-  password: any;
-  name: any;
-  phone: any;
-  role: any;
-  country: any;
-  zone: any;
-  region: any;
-  area: any;
-  territory: any;
-  super_user: any;
-  latitude : any;
-  longitude : any;
-  area_id: any;
-  module: any;
-}
+import { DataService } from './data.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-users',
@@ -28,10 +9,8 @@ interface User{
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit{
-
-emailControl = new FormControl('', [Validators.required, Validators.email]);
-loading = false;
-updateLoading = false;
+  errorMessage = '';
+  emailControl = new FormControl('', [Validators.required, Validators.email]);
   rows = [
     {
       email: '',
@@ -46,17 +25,14 @@ updateLoading = false;
       area: '',
       territory: '',
       super_user: '',
-      area_id: '',
       latitude: '',
       longitude: '',
-      module: '',
     },
   ];
 
-  constructor(private http: HttpClient, private _snackBar: MatSnackBar) {}
+  constructor(private dataService: DataService, private spinner: NgxSpinnerService) {}
 
   ngOnInit() {}
-
   addRow() {
     this.rows.push({
       email: '',
@@ -71,92 +47,56 @@ updateLoading = false;
       area: '',
       territory: '',
       super_user: '',
-      area_id: '',
       latitude: '',
       longitude: '',
-      module: '',
     });
   }
-
   getData(index: number) {
-    this.loading = true;
-    const email = this.rows[index].email;
-    this.http
-      .get<{
-        email: any;
-        login_type: any;
-        password: any;
-        name: any;
-        phone: any;
-        role: any;
-        country: any;
-        zone: any;
-        region: any;
-        area: any;
-        territory: any;
-        super_user: any;
-        latitude: any;
-        longitude: any;
-        area_id: any;
-        module: any;
-      }>(
-        `http://localhost:8000/amigo/v1.0/workbench-tables/staff-users?email_id=${email}`
-      )
-      .subscribe((data) => {
+    this.spinner.show();
+    this.dataService.getData(this.rows[index].email).subscribe(
+      (data) => {
         this.rows[index] = data;
-
-        this.loading = false;
-      });
+        setTimeout(() => {
+          this.spinner.hide();
+        }, 500);
+      },
+      (error) => {
+      this.errorMessage = error.error.error;
+      alert(this.errorMessage);
+      this.spinner.hide();
+      }
+    );
   }
 
-  saveData(row : any) {
-      this.http
-        .post(`http://localhost:8000/amigo/v1.0/workbench-tables/staff-users/`, row)
-        .subscribe();
-    }
-
-  updateData(row : any) {
-      this.updateLoading = false
-      this.http
-        .put(
-          `http://localhost:8000/amigo/v1.0/workbench-tables/staff-users/?email_id=${row.email}`,
-          row
-        )
-        .subscribe(() => {
-          this.updateLoading = false;
-        });
+  saveData(row: any) {
+    this.spinner.show();
+    this.dataService.saveData(row).subscribe(
+      (data) => {
+        console.log(data);
+        this.spinner.hide();
+      },
+      (error) => {
+        this.errorMessage = error.error.error;
+        alert(this.errorMessage);
+        this.spinner.hide();
+      }
+    );
   }
-// updateData(row : any) {
-//     this.http
-//       .put(
-//         `http://localhost:8000/amigo/v1.0/workbench-tables/staff-users/?email_id=${row.email}`,
-//         row
-//       )
-//       .subscribe(() => {
-//         this._snackBar.open('Successfully updated', '', {
-//           duration: 2000,
-//         });
-//         this.rows[this.rows.indexOf(row)]={
-//         email : '',
-//         login_type : '',
-//         password : '',
-//         name : '',
-//         phone : '',
-//         role : '',
-//         country : '',
-//         zone : '',
-//         region : '',
-//         area : '',
-//         territory : '',
-//         super_user : '',
-//         area_id : '',
-//         latitude : '',
-//         longitude : '',
-//         module : ''
 
-//         }
-//       });
-// }
+  updateData(row: any) {
+    this.spinner.show();
+    this.dataService.updateData(row).subscribe(
+      (data) => {
+        console.log(data);
+        this.spinner.hide();
+      },
+      (error) => {
+        this.errorMessage = error.error.error;
+        alert(this.errorMessage);
+        this.spinner.hide();
+      }
+    );
+  }
 
   deleteRow(index: number) {
     this.rows.splice(index, 1);

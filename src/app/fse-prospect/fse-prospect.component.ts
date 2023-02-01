@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { DataService } from './data.service';
 import { FormControl, Validators } from '@angular/forms';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-fse-prospect',
@@ -8,9 +9,8 @@ import { FormControl, Validators } from '@angular/forms';
   styleUrls: ['./fse-prospect.component.css']
 })
 export class FseProspectComponent implements OnInit{
+  errorMessage = '';
   prospectControl = new FormControl('', [Validators.required, Validators.email]);
-  loading = false;
-  updateLoading = false;
   rows = [
     {
       prospect_id : '',
@@ -40,10 +40,9 @@ export class FseProspectComponent implements OnInit{
     },
   ];
 
-  constructor(private http: HttpClient) {}
+  constructor(private dataService: DataService, private spinner: NgxSpinnerService) {}
 
   ngOnInit() {}
-
   addRow() {
     this.rows.push({
       prospect_id : '',
@@ -74,60 +73,49 @@ export class FseProspectComponent implements OnInit{
   }
 
   getData(index: number) {
-    this.loading = true;
-    const prospect_id = this.rows[index].prospect_id;
-    this.http
-      .get<{
-        prospect_id : any;
-        fse_angaza_id : any;
-        agent_user_name : any;
-        customer_name : any;
-        status : any;
-        customer_phone_number : any;
-        customer_secondary_phone_number : any;
-        customer_address : any;
-        account_number : any;
-        product_name : any;
-        ticket_type : any;
-        otp : any;
-        unsuccessful_otp_attempts : any;
-        installation_attempted : any;
-        body : any;
-        body_registration : any;
-        latitude : any;
-        longitude : any;
-        checkin_accuracy : any;
-        distance : any;
-        area : any;
-        is_otp_call_approved : any;
-        country : any;
-        reassignment_attempt : any;
-      }>(
-        `http://localhost:8000/amigo/v1.0/workbench-tables/fse-prospect?prospect_id=${prospect_id}`
-      )
+    this.spinner.show();
+    this.dataService.getData(this.rows[index].prospect_id)
       .subscribe((data) => {
         this.rows[index] = data;
-
-        this.loading = false;
+        setTimeout(() => {
+          this.spinner.hide();
+        }, 500);
+      },
+      (error) => {
+      this.errorMessage = error.error.error;
+      alert(this.errorMessage);
+      this.spinner.hide();
       });
   }
 
   saveData(row : any) {
-      this.http
-        .post(`http://localhost:8000/amigo/v1.0/workbench-tables/fse-prospect/`, row)
-        .subscribe();
-    }
+    this.spinner.show();
+    this.dataService.saveData(row).subscribe(
+      (data) => {
+        console.log(data);
+        this.spinner.hide();
+      },
+      (error) => {
+        this.errorMessage = error.error.error;
+        alert(this.errorMessage);
+        this.spinner.hide();
+      }
+    );
+  }
 
   updateData(row : any) {
-    this.updateLoading = false
-      this.http
-        .put(
-          `http://localhost:8000/amigo/v1.0/workbench-tables/fse-prospect/?prospect_id=${row.prospect_id}`,
-          row
-        )
-        .subscribe(() => {
-          this.updateLoading = false;
-        });
+    this.spinner.show();
+    this.dataService.updateData(row).subscribe(
+      (data) => {
+        console.log(data);
+        this.spinner.hide();
+      },
+      (error) => {
+        this.errorMessage = error.error.error;
+        alert(this.errorMessage);
+        this.spinner.hide();
+      }
+    );
   }
 
   deleteRow(index: number) {
