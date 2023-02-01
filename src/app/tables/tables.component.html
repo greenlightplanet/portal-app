@@ -10,7 +10,6 @@
   <select [(ngModel)]="selectedOption" class="form-select" aria-label="Disabled select example" >
     <option *ngFor="let option of options" [value]="option.value">{{ option.name }}</option>
   </select>
-
 </div>
   <div *ngIf="selectedOption === ''">
   </div>

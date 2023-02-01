@@ -5,16 +5,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TablesComponent } from './tables/tables.component';
-import { FseProspectComponent } from './fse-prospect/fse-prospect.component';
-import { FseInstallationDetailsComponent } from './fse-installation-details/fse-installation-details.component';
-import { FseProspectProductImagesComponent } from './fse-prospect-product-images/fse-prospect-product-images.component';
-import { UsersComponent } from './users/users.component';
+import { FseProspectComponent } from './tables/fse-prospect/fse-prospect.component';
+import { FseInstallationDetailsComponent } from './tables/fse-installation-details/fse-installation-details.component';
+import { FseProspectProductImagesComponent } from './tables/fse-prospect-product-images/fse-prospect-product-images.component';
+import { UsersComponent } from './tables/users/users.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-// import { SharedService } from './shared.service';
-import { FseProspectDetailsComponent } from './fse-prospect-details/fse-prospect-details.component';
+import { FseProspectDetailsComponent } from './tables/fse-prospect-details/fse-prospect-details.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -32,8 +29,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxSpinnerModule,
-    MatSnackBarModule
+    NgxSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
