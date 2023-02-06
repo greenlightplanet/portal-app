@@ -15,7 +15,7 @@ interface Data {
 })
 export class DataService {
 
-  baseUrl = 'https://staff.glpapps.com/amigo/v1.0/workbench-tables/fse-prospect-product-images/';
+  baseUrl = 'http://dev.glpapps.com/amigo/v1.0/workbench-tables/fse-prospect-product-images/';
 
   constructor(private http: HttpClient) { }
 

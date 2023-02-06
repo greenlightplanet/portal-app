@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class DataService {
 
-  baseUrl = 'https://staff.glpapps.com/amigo/v1.0/workbench-tables/fse-installation-details/';
+  baseUrl = 'http://dev.glpapps.com/amigo/v1.0/workbench-tables/fse-installation-details/';
 
   constructor(private http: HttpClient) { }
 
