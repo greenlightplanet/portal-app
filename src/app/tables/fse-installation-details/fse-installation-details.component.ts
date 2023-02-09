@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from './data.service';
 import { FormControl, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { AbstractControl, ValidatorFn } from '@angular/forms';
 
 @Component({
   selector: 'app-fse-installation-details',
@@ -10,7 +11,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class FseInstallationDetailsComponent implements OnInit{
   errorMessage = '';
-  prospectControl = new FormControl('', [Validators.required, Validators.email]);
+  prospectControl = new FormControl('', [Validators.required]);
   rows = [
     {
       fse_angaza_id: '',
@@ -30,7 +31,16 @@ export class FseInstallationDetailsComponent implements OnInit{
 
   constructor(private dataService: DataService, private spinner: NgxSpinnerService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.prospectControl.setValidators([this.prospectIdValidator(/^PP[0-9]+$/)]);
+  }
+
+  prospectIdValidator = (pattern: RegExp): ValidatorFn => {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const valid = pattern.test(control.value);
+      return valid ? null : { prospectId: { value: control.value } };
+    };
+  }
 
   addRow() {
     this.rows.push({
@@ -50,6 +60,10 @@ export class FseInstallationDetailsComponent implements OnInit{
   }
 
   getData(index: number) {
+    if (!this.rows[index].prospect_id || !this.prospectControl.valid) {
+      alert('Valid Prospect Id is required.');
+      return;
+    }
     this.spinner.show();
     const prospect_id = this.rows[index].prospect_id;
     this.dataService.getData(prospect_id)
@@ -67,6 +81,10 @@ export class FseInstallationDetailsComponent implements OnInit{
 }
 
   saveData(row : any) {
+    if (!row.prospect_id && !this.prospectControl.valid) {
+      alert('Valid Prospect Id is required.');
+      return;
+    }
     this.spinner.show();
     this.dataService.saveData(row).subscribe(
       (data) => {
@@ -75,13 +93,22 @@ export class FseInstallationDetailsComponent implements OnInit{
       },
       (error) => {
         this.errorMessage = error.error.error;
-        alert(this.errorMessage);
+        if (!this.errorMessage) {
+        alert('Please provide valid Inputs.');
+        }
+        else {
+          alert(this.errorMessage);
+        }
         this.spinner.hide();
-      }
+        }
     );
   }
 
   updateData(row : any) {
+    if (!row.prospect_id) {
+      alert('Valid Prospect Id is required.');
+      return;
+    }
     this.spinner.show();
     this.dataService.updateData(row).subscribe(
       (data) => {
@@ -90,9 +117,14 @@ export class FseInstallationDetailsComponent implements OnInit{
       },
       (error) => {
         this.errorMessage = error.error.error;
-        alert(this.errorMessage);
+        if (!this.errorMessage) {
+        alert('Please provide valid Inputs.');
+        }
+        else {
+          alert(this.errorMessage);
+        }
         this.spinner.hide();
-      }
+        }
     );
   }
 

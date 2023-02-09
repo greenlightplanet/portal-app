@@ -52,6 +52,11 @@ export class UsersComponent implements OnInit{
     });
   }
   getData(index: number) {
+    if (!this.rows[index].email || !this.emailControl.valid) {
+      alert('Valid email Id is required.');
+      return;
+    }
+
     this.spinner.show();
     this.dataService.getData(this.rows[index].email).subscribe(
       (data) => {
@@ -68,7 +73,21 @@ export class UsersComponent implements OnInit{
     );
   }
 
+
   saveData(row: any) {
+    // if (!row.email || !row.login_type || !row.territory) {
+    //   alert('Email, login type and territory are required fields.');
+    //   return;
+    // }
+    if (!row.email || !this.emailControl.valid) {
+      alert('Valid email is required.');
+      return;
+    }
+    if (!row.login_type || !row.territory) {
+      alert('Login type and territory are required fields.');
+      return;
+    }
+
     this.spinner.show();
     this.dataService.saveData(row).subscribe(
       (data) => {
@@ -84,6 +103,14 @@ export class UsersComponent implements OnInit{
   }
 
   updateData(row: any) {
+    if (!row.email || !this.emailControl.valid) {
+      alert('Valid email is required.');
+      return;
+    }
+    if (!row.login_type || !row.territory) {
+      alert('Login type and territory are required fields.');
+      return;
+    }
     this.spinner.show();
     this.dataService.updateData(row).subscribe(
       (data) => {

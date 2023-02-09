@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from './data.service';
 import { FormControl, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { AbstractControl, ValidatorFn } from '@angular/forms';
 @Component({
   selector: 'app-fse-prospect-product-images',
   templateUrl: './fse-prospect-product-images.component.html',

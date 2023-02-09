@@ -26,7 +26,10 @@
             <th>delete_row</th>
             <th>save_row</th>
             <th>update_row</th>
-            <th>email<div *ngIf="emailControl.hasError('required')" style="color: red; font-size:small;">*Email Id is required</div></th>
+            <th>email
+              <div *ngIf="emailControl.hasError('required')" style="color: red; font-size:small;">*Email Id is required</div>
+              <div *ngIf="emailControl.hasError('email')" style="color: red; font-size:small;">*Email Id is invalid</div>
+            </th>
             <th>login_type</th>
             <th>password</th>
             <th>name</th>
