@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
 import { DataService } from './data.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { User } from 'src/app/models/users.model';
 
 @Component({
   selector: 'app-users',
@@ -10,57 +10,110 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class UsersComponent implements OnInit{
   errorMessage = '';
-  emailControl = new FormControl('', [Validators.required, Validators.email]);
-  rows = [
-    {
-      email: '',
-      login_type: '',
-      password: '',
-      name: '',
-      phone: '',
-      role: '',
-      country: '',
-      zone: '',
-      region: '',
-      area: '',
-      territory: '',
-      super_user: '',
-      latitude: '',
-      longitude: '',
-    },
-  ];
+  users: Array<User> = [{saveFlag:false, updateFlag: false, deleteFlag: false, getFlag: false,email: "",login_type: "",password: "",name: "",phone: "",role: "",country: "",zone: "",region: "",area: "",territory: "",super_user: "",latitude: "",longitude: ""}];
+  
 
   constructor(private dataService: DataService, private spinner: NgxSpinnerService) {}
 
   ngOnInit() {}
-  addRow() {
-    this.rows.push({
-      email: '',
-      login_type: '',
-      password: '',
-      name: '',
-      phone: '',
-      role: '',
-      country: '',
-      zone: '',
-      region: '',
-      area: '',
-      territory: '',
-      super_user: '',
-      latitude: '',
-      longitude: '',
-    });
-  }
-  getData(index: number) {
-    if (!this.rows[index].email || !this.emailControl.valid) {
-      alert('Valid email Id is required.');
-      return;
-    }
 
+  checkFields(index: number): boolean {
+    const user = this.users[index];
+  
+    user.saveFlag = !!user.email &&
+    !!user.login_type &&
+    !!user.password &&
+    !!user.name &&
+    !!user.phone &&
+    !!user.role &&
+    !!user.country &&
+    !!user.zone &&
+    !!user.region &&
+    !!user.area &&
+    !!user.territory &&
+    !!user.super_user &&
+    !!user.latitude &&
+    !!user.longitude;
+  
+    return user.saveFlag;
+  }
+
+  checkEmailOnly(index: number): boolean {
+    const user = this.users[index];
+    user.getFlag = !(
+      !!user.login_type ||
+      !!user.password ||
+      !!user.name ||
+      !!user.phone ||
+      !!user.role ||
+      !!user.country ||
+      !!user.zone ||
+      !!user.region ||
+      !!user.area ||
+      !!user.territory ||
+      !!user.super_user ||
+      !!user.latitude ||
+      !!user.longitude
+    ) && !!user.email;
+  
+    return user.getFlag;
+  }
+
+  deleteUser(): void {
+    if (this.users.length > 1) {
+      this.users.pop();
+    }
+  }
+
+  addUser() {
+    let newRow: User = {saveFlag:false, updateFlag: false, deleteFlag: false, getFlag: false,email: "",login_type: "",password: "",name: "",phone: "",role: "",country: "",zone: "",region: "",area: "",territory: "",super_user: "",latitude: "",longitude: ""}
+    this.users.push(newRow);
+  }
+
+  reset(){
     this.spinner.show();
-    this.dataService.getData(this.rows[index].email).subscribe(
+    this.users = [{
+      saveFlag: false,
+      updateFlag: false,
+      deleteFlag: false,
+      getFlag: false,
+      email: "",
+      login_type: "",
+      password: "",
+      name: "",
+      phone: "",
+      role: "",
+      country: "",
+      zone: "",
+      region: "",
+      area: "",
+      territory: "",
+      super_user: "",
+      latitude: "",
+      longitude: ""
+    }];
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 500);
+  }
+
+  validateEmail(index: number) {
+    const email = this.users[index].email;
+    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return emailRegex.test(email);
+  }
+  
+  getData(user: User, index: number) {
+      if (!this.users[index].email || !this.validateEmail(index)) {
+        alert("Please enter a valid email");
+        return;
+      }
+    
+    this.spinner.show();
+    this.dataService.getData(this.users[index].email).subscribe(
       (data) => {
-        this.rows[index] = data;
+        this.users[index] = data;
+        this.users[index].updateFlag = true;
         setTimeout(() => {
           this.spinner.hide();
         }, 500);
@@ -68,64 +121,67 @@ export class UsersComponent implements OnInit{
       (error) => {
       this.errorMessage = error.error.error;
       alert(this.errorMessage);
-      this.spinner.hide();
+      setTimeout(() => {
+          this.spinner.hide();
+        }, 500);
       }
     );
   }
 
-
-  saveData(row: any) {
-    // if (!row.email || !row.login_type || !row.territory) {
-    //   alert('Email, login type and territory are required fields.');
-    //   return;
-    // }
-    if (!row.email || !this.emailControl.valid) {
-      alert('Valid email is required.');
-      return;
-    }
-    if (!row.login_type || !row.territory) {
-      alert('Login type and territory are required fields.');
+  saveData(user: User, index: number) {
+    
+    if (!user.email || !this.validateEmail(index)) {
+      alert("Please enter a valid email");
       return;
     }
 
     this.spinner.show();
-    this.dataService.saveData(row).subscribe(
-      (data) => {
+    this.dataService.saveData(user).subscribe(
+      data => {
         console.log(data);
-        this.spinner.hide();
+        alert('A new row has been added to the Users table.');
+        setTimeout(() => {
+          this.spinner.hide();
+        }, 500);
       },
-      (error) => {
+      error => {
         this.errorMessage = error.error.error;
+        console.log(this.errorMessage);
         alert(this.errorMessage);
-        this.spinner.hide();
+        setTimeout(() => {
+          this.spinner.hide();
+        }, 500);
       }
     );
   }
 
-  updateData(row: any) {
-    if (!row.email || !this.emailControl.valid) {
-      alert('Valid email is required.');
+  updateData(user: User, index: number) {
+    
+    if (!user.email || !this.validateEmail(index)) {
+      alert("Please enter a valid email");
       return;
     }
-    if (!row.login_type || !row.territory) {
-      alert('Login type and territory are required fields.');
-      return;
-    }
+
     this.spinner.show();
-    this.dataService.updateData(row).subscribe(
-      (data) => {
+    this.dataService.updateData(user).subscribe(
+      data => {
         console.log(data);
-        this.spinner.hide();
+        alert('The row has been updated successfully.');
+        setTimeout(() => {
+          this.spinner.hide();
+        }, 500);
       },
-      (error) => {
+      error => {
         this.errorMessage = error.error.error;
         alert(this.errorMessage);
-        this.spinner.hide();
+        setTimeout(() => {
+          this.spinner.hide();
+        }, 500);
       }
     );
   }
 
   deleteRow(index: number) {
-    this.rows.splice(index, 1);
+    this.users.splice(index, 1);
   }
 }

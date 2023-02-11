@@ -4,10 +4,14 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
   />
   <body>
-      <div class="button-container">
+      <div class="button-container" style="flex-wrap:wrap;">
         <div id="butn">
-          <button class="btn btn-primary mx-auto" (click)="addRow()" id="button1">
+          <button class="btn btn-primary mx-auto" (click)="addUser()" id="button1" >
           Add Row</button>
+          <button class="btn btn-primary mx-auto" [disabled]="users.length === 1" (click)="deleteUser()" id="button2" >
+            Delete Row</button>
+            <button class="btn btn-primary mx-auto" (click)="reset()" id="button3" >
+            Reset Page</button>
         </div>
       </div>
       <br />
@@ -21,49 +25,50 @@
       <p style="color: white">Loading...</p>
     </ngx-spinner>
         <table class="style" >
-          <tr>
-            <th>fetch_row</th>
-            <th>delete_row</th>
-            <th>save_row</th>
-            <th>update_row</th>
-            <th>email
-              <div *ngIf="emailControl.hasError('required')" style="color: red; font-size:small;">*Email Id is required</div>
-              <div *ngIf="emailControl.hasError('email')" style="color: red; font-size:small;">*Email Id is invalid</div>
-            </th>
-            <th>login_type</th>
-            <th>password</th>
-            <th>name</th>
-            <th>phone</th>
-            <th>role</th>
-            <th>country</th>
-            <th>zone</th>
-            <th>region</th>
-            <th>area</th>
-            <th>territory</th>
-            <th>super_user</th>
-            <th>latitude</th>
-            <th>longitude</th>
-          </tr>
-          <tr *ngFor="let row of rows; let i = index">
-            <td><button (click)="getData(i)"><i class="fa fa-refresh"></i></button></td>
-            <td><button (click)="deleteRow(i)"><i class="fa fa-trash"></i></button></td>
-            <td><button (click)="saveData(row)"><i class="fa fa-floppy-o"></i></button></td>
-            <td><button (click)="updateData(row)"><i class="fa fa-pencil-square"></i></button></td>
-            <td><input [(ngModel)]="row.email" name="email" type="text" [formControl]="emailControl"/></td>
-            <td><input [(ngModel)]="row.login_type" name="login_type" type="text" /></td>
-            <td><input [(ngModel)]="row.password" name="password" type="text" /></td>
-            <td><input [(ngModel)]="row.name" name="name" type="text" /></td>
-            <td><input [(ngModel)]="row.phone" name="phone" type="text" /></td>
-            <td><input [(ngModel)]="row.role" name="role" type="text" /></td>
-            <td><input [(ngModel)]="row.country" name="country" type="text" /></td>
-            <td><input [(ngModel)]="row.zone" name="zone" type="text" /></td>
-            <td><input [(ngModel)]="row.region" name="region" type="text" /></td>
-            <td><input [(ngModel)]="row.area" name="area" type="text" /></td>
-            <td><input [(ngModel)]="row.territory" name="territory" type="text" /></td>
-            <td><input [(ngModel)]="row.super_user" name="super_user" type="text" /></td>
-            <td><input [(ngModel)]="row.latitude" name="latitude" type="text" /></td>
-            <td><input [(ngModel)]="row.longitude" name="longitude" type="text" /></td>
-          </tr>
+          <thead>
+            <tr>
+              <th>fetch_row</th>
+              <th>save_row</th>
+              <th>update_row</th>
+              <th>delete_row</th>
+              <th>email</th>
+              <th>login_type</th>
+              <th>password</th>
+              <th>name</th>
+              <th>phone</th>
+              <th>role</th>
+              <th>country</th>
+              <th>zone</th>
+              <th>region</th>
+              <th>area</th>
+              <th>territory</th>
+              <th>super_user</th>
+              <th>latitude</th>
+              <th>longitude</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of users; let i = index">
+              <td><button (click)="getData(row,i)" [disabled]="!checkEmailOnly(i) || !validateEmail(i)" ><i class="fa fa-refresh"></i></button></td>
+              <td><button (click)="saveData(row,i)" [disabled]="!checkFields(i) || !validateEmail(i)"><i class="fa fa-floppy-o"></i></button></td>
+              <td><button [disabled] = "!row.updateFlag || !validateEmail(i)" (click)="updateData(row,i)"><i class="fa fa-pencil-square"></i></button></td>
+              <td><button  [disabled]="users.length === 1" (click)="deleteRow(i)"><i class="fa fa-trash"></i></button></td>
+              <td><input [(ngModel)]="row.email" name="email" type="text"/></td>
+              <td><input [(ngModel)]="row.login_type" name="login_type" type="text" /></td>
+              <td><input [(ngModel)]="row.password" name="password" type="text" /></td>
+              <td><input [(ngModel)]="row.name" name="name" type="text" /></td>
+              <td><input [(ngModel)]="row.phone" name="phone" type="text" /></td>
+              <td><input [(ngModel)]="row.role" name="role" type="text" /></td>
+              <td><input [(ngModel)]="row.country" name="country" type="text" /></td>
+              <td><input [(ngModel)]="row.zone" name="zone" type="text" /></td>
+              <td><input [(ngModel)]="row.region" name="region" type="text" /></td>
+              <td><input [(ngModel)]="row.area" name="area" type="text" /></td>
+              <td><input [(ngModel)]="row.territory" name="territory" type="text" /></td>
+              <td><input [(ngModel)]="row.super_user" name="super_user" type="text" /></td>
+              <td><input [(ngModel)]="row.latitude" name="latitude" type="text" /></td>
+              <td><input [(ngModel)]="row.longitude" name="longitude" type="text" /></td>
+            </tr>
+          </tbody>
         </table>
       </div>
   </body>

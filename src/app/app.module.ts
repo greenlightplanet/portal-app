@@ -12,6 +12,7 @@ import { UsersComponent } from './tables/users/users.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FseProspectDetailsComponent } from './tables/fse-prospect-details/fse-prospect-details.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     FseInstallationDetailsComponent,
     FseProspectProductImagesComponent,
     UsersComponent,
-    FseProspectDetailsComponent
+    FseProspectDetailsComponent,
   ],
   imports: [
     HttpClientModule,
@@ -29,7 +30,9 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    MatSnackBarModule
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

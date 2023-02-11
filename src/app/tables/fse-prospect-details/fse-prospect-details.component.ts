@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from './data.service';
-import { FormControl, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { AbstractControl, ValidatorFn } from '@angular/forms';
+import { Prospect } from 'src/app/models/fse-prospect-details.model';
 
 @Component({
   selector: 'app-fse-prospect-details',
@@ -11,64 +10,162 @@ import { AbstractControl, ValidatorFn } from '@angular/forms';
 })
 export class FseProspectDetailsComponent implements OnInit {
   errorMessage = '';
-  prospectControl = new FormControl('', [Validators.required]);
-  rows = [
-    {
-      fse_angaza_id: '',
-      prospect_id: '',
-      status: '',
-      status_updated_at: '',
-      ticket_id: '',
-      approved: '',
-      message: '',
-      attempt: '',
-      country: '',
-    },
-  ];
+  addRowFlag: boolean = false;
+  saveAllFlag: boolean = false;
+
+  prospects: Array<Prospect> = [{saveFlag:false, updateFlag: false, deleteFlag: false, getFlag: false,fse_angaza_id : "", prospect_id : "", status : "", status_updated_at : "", ticket_id : "", approved : "", message : "", attempt : "", country : ""}];
+
+
 
   constructor(private dataService: DataService, private spinner: NgxSpinnerService) {}
 
   ngOnInit() {
-    this.prospectControl.setValidators([this.prospectIdValidator(/^PP[0-9]+$/)]);
+    this.saveAllFlag = this.prospects.length > 1 && this.prospects.every(prospect => prospect.saveFlag);
   }
 
-  prospectIdValidator = (pattern: RegExp): ValidatorFn => {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      const valid = pattern.test(control.value);
-      return valid ? null : { prospectId: { value: control.value } };
-    };
+  checkFields(index: number): boolean {
+    const prospect = this.prospects[index];
+  
+    prospect.saveFlag =   !!prospect.fse_angaza_id &&
+    !!prospect.prospect_id &&
+    !!prospect.status &&
+    !!prospect.status_updated_at &&
+    !!prospect.ticket_id &&
+    !!prospect.approved &&
+    !!prospect.message &&
+    !!prospect.attempt &&
+    !!prospect.country ;
+  
+    return prospect.saveFlag;
   }
 
-  addRow() {
-    this.rows.push({
-      fse_angaza_id: '',
-      prospect_id: '',
-      status: '',
-      status_updated_at: '',
-      ticket_id: '',
-      approved: '',
-      message: '',
-      attempt: '',
-      country: '',
+  checkProspectOnly(index: number): boolean {
+    const prospect = this.prospects[index];
+    prospect.getFlag = !(
+      !!prospect.fse_angaza_id ||
+      !!prospect.status ||
+      !!prospect.status_updated_at ||
+      !!prospect.ticket_id ||
+      !!prospect.approved ||
+      !!prospect.message ||
+      !!prospect.attempt ||
+      !!prospect.country 
+    ) && !!prospect.prospect_id;
+  
+    return prospect.getFlag;
+  }
+
+  deleteUser(): void {
+    if (this.prospects.length > 1) {
+      this.prospects.pop();
+    }
+  }
+
+  addUser() {
+    let newRow: Prospect = {saveFlag:false, updateFlag: false, deleteFlag: false, getFlag: false,fse_angaza_id : "", prospect_id : "", status : "", status_updated_at : "", ticket_id : "", approved : "", message : "", attempt : "", country : ""}
+    this.prospects.push(newRow);
+  }
+
+  reset(){
+    this.addRowFlag=false;
+    this.prospects = [{saveFlag:false, updateFlag: false, deleteFlag: false, getFlag: false,fse_angaza_id : "", prospect_id : "", status : "", status_updated_at : "", ticket_id : "", approved : "", message : "", attempt : "", country : ""}];
+  }
+
+  validateProspect(index: number) {
+    const prospect_id = this.prospects[index].prospect_id;
+    const prospectRegex = /^PP[0-9]+$/;
+    return prospectRegex.test(prospect_id);
+  }
+
+  getData(prospect: Prospect, index: number) {
+    if (!this.prospects[index].prospect_id || !this.validateProspect(index)) {
+      alert("Please enter a valid Prospect Id");
+      return;
+    }
+    this.spinner.show();
+    this.prospects.forEach((currentRow, currentIndex) => {
+      const prospect_id = currentRow.prospect_id;
+      this.dataService.getData(prospect_id)
+        .subscribe((data) => {
+          if (data.length === 0) {
+            alert("No Data Found for the Prospect Id: " + prospect_id);
+          } else {
+            this.prospects[currentIndex] = data[0];
+            this.prospects[index].updateFlag = true;
+            if (data.length > 1) {
+              for (let i = 1; i < data.length; i++) {
+                this.prospects.push(data[i]);
+              }
+            }
+          }
+          this.addRowFlag = true;
+          console.log(this.prospects);
+          setTimeout(() => {
+            this.spinner.hide();
+          }, 500);
+        },
+        (error) => {
+          this.errorMessage = error.error.error;
+          if (!this.errorMessage) {
+            alert('Please provide valid Inputs.');
+          } else {
+            alert(this.errorMessage);
+          }
+          setTimeout(() => {
+            this.spinner.hide();
+          }, 500);
+        });
     });
   }
-
-getData(index: number) {
-  if (!this.rows[index].prospect_id && !this.prospectControl.valid) {
-    alert('Valid Prospect Id is required.');
-    return;
+  validateAllProspects() {
+    let isValid = true;
+    this.prospects.forEach((prospect, index) => {
+      if (!this.validateProspect(index)) {
+        isValid = false;
+      }
+    });
+    return isValid;
   }
-  this.spinner.show();
-  this.rows.forEach((currentRow, currentIndex) => {
-    const prospect_id = currentRow.prospect_id;
-    this.dataService.getData(prospect_id)
+  
+
+  saveAll() {
+    if (!this.validateAllProspects()) {
+      alert("Please enter valid data for all prospects");
+      return;
+    }
+    this.spinner.show();
+    this.dataService.saveData(this.prospects)
       .subscribe((data) => {
-        this.rows[currentIndex] = data[0];
-        if (data.length > 1) {
-          for (let i = 1; i < data.length; i++) {
-            this.rows.push(data[i]);
-          }
+        alert("All prospects saved successfully");
+        setTimeout(() => {
+          this.spinner.hide();
+        }, 500);
+      },
+      (error) => {
+        this.errorMessage = error.error.error;
+        if (!this.errorMessage) {
+          alert('Please provide valid inputs.');
         }
+        else {
+          alert(this.errorMessage);
+        }
+        setTimeout(() => {
+          this.spinner.hide();
+        }, 500);
+      });
+  }
+  
+
+  saveData(prospect: Prospect, index: number) {
+    if (!this.prospects[index].prospect_id || !this.validateProspect(index)) {
+      alert("Please enter a valid Prospect Id");
+      return;
+    }
+    this.spinner.show();
+    this.dataService.saveData(prospect).subscribe(
+      (data) => {
+        console.log(data);
+        alert('A new row has been added to the Fse-Prospect-Details table.');
         setTimeout(() => {
           this.spinner.hide();
         }, 500);
@@ -81,33 +178,9 @@ getData(index: number) {
         else {
           alert(this.errorMessage);
         }
-        this.spinner.hide();
-        });
-  });
-}
-
-
-
-  saveData(row : any) {
-    if (!row.prospect_id) {
-      alert('Valid Prospect Id is required.');
-      return;
-    }
-    this.spinner.show();
-    this.dataService.saveData(row).subscribe(
-      (data) => {
-        console.log(data);
-        this.spinner.hide();
-      },
-      (error) => {
-        this.errorMessage = error.error.error;
-        if (!this.errorMessage) {
-        alert('Please provide valid Inputs.');
-        }
-        else {
-          alert(this.errorMessage);
-        }
-        this.spinner.hide();
+        setTimeout(() => {
+          this.spinner.hide();
+        }, 500);
         }
     );
   }
@@ -122,6 +195,6 @@ getData(index: number) {
   // }
 
   deleteRow(index: number) {
-    this.rows.splice(index, 1);
+    this.prospects.splice(index, 1);
   }
 }
