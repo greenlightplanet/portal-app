@@ -1,0 +1,12 @@
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    background-color: rgb(255, 219, 0);
+    text-align: center;
+  }
+  .navbar-nav a, .navbar-brand {
+    align-items: center;
+    color: rgb(0, 0, 0);
+  }
