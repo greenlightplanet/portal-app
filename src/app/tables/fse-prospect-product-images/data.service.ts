@@ -15,9 +15,9 @@ interface Data {
 })
 export class DataService {
 
-  // baseUrl = 'https://dev.glpapps.com/amigo/v1.0/workbench-tables/fse-prospect-product-images/';
+  baseUrl = 'https://dev.glpapps.com/amigo/v1.0/workbench-tables/fse-prospect-product-images/';
   // baseUrl = 'http://localhost:8000/amigo/v1.0/workbench-tables/fse-prospect-product-images/';
-  baseUrl = 'https://staff.glpapps.com/amigo/v1.0/workbench-tables/fse-prospect-product-images/';
+  // baseUrl = 'https://staff.glpapps.com/amigo/v1.0/workbench-tables/fse-prospect-product-images/';
 
   constructor(private http: HttpClient) { }
 

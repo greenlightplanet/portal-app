@@ -7,9 +7,9 @@ import { Observable } from 'rxjs';
 })
 export class DataService {
 
-  // baseUrl = 'https://dev.glpapps.com/amigo/v1.0/workbench-tables/staff-users/';
+  baseUrl = 'https://dev.glpapps.com/amigo/v1.0/workbench-tables/staff-users/';
   // baseUrl = 'http://localhost:8000/amigo/v1.0/workbench-tables/staff-users/';
-  baseUrl = 'https://staff.glpapps.com/amigo/v1.0/workbench-tables/staff-users/';
+  // baseUrl = 'https://staff.glpapps.com/amigo/v1.0/workbench-tables/staff-users/';
 
   constructor(private http: HttpClient) { }
 
