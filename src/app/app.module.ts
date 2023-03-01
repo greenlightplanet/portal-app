@@ -13,6 +13,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FseProspectDetailsComponent } from './tables/fse-prospect-details/fse-prospect-details.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { LoginTablesComponent } from './login-tables/login-tables.component';
+import { Routes, RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     FseProspectProductImagesComponent,
     UsersComponent,
     FseProspectDetailsComponent,
+    LoginTablesComponent,
   ],
   imports: [
     HttpClientModule,
@@ -31,7 +34,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     FormsModule,
     ReactiveFormsModule,
     NgxSpinnerModule,
-    MatSnackBarModule
+    MatSnackBarModule,
     
   ],
   providers: [],
