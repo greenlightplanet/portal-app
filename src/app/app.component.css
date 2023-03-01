@@ -1,12 +1,35 @@
-
 .navbar {
     display: flex;
     justify-content: center;
-    height: 100%;
     background-color: rgb(255, 219, 0);
-    text-align: center;
   }
-  .navbar-nav a, .navbar-brand {
+.navbar-brand {
     align-items: center;
-    color: rgb(0, 0, 0);
   }
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.right-align {
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin-right: 5%;
+  margin-top: 0.8%;
+  padding: 10px;
+}
+.history-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: black;
+  color: white !important; /* Add !important to override any other styles */
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.history-button:hover {
+  background-color: black;
+}

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-login-tables',
@@ -9,28 +10,20 @@ import { Router } from '@angular/router';
 export class LoginTablesComponent implements OnInit {
   username!: string;
   password!: string;
+  errorMessage!: string;
 
-  constructor(private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
-  ngOnInit() {  // Set username and password in local storage
-    localStorage.setItem('username', 'sathyam');
-    localStorage.setItem('password', 'goyal');
-    localStorage.setItem('isLoggedIn', 'false');
+  ngOnInit() { 
+    this.authService.logout(); // Log out user on component initialization
   }
 
   login() {
-    // Get saved credentials from local storage
-    const savedUsername = localStorage.getItem('username');
-    const savedPassword = localStorage.getItem('password');
-
-    // Check if credentials match
-    if (this.username === savedUsername && this.password === savedPassword) {
-      localStorage.setItem('isLoggedIn', 'true');
-      // Route to tables component
-      this.router.navigate(['tables']);
+    const isAuthenticated = this.authService.login(this.username, this.password);
+    if (isAuthenticated) {
+      this.router.navigate(['tables']); // Route to tables component if authentication is successful
     } else {
-      // Show alert message
-      alert('Invalid username or password');
+      this.errorMessage = 'Invalid username or password';
     }
   }
 }
