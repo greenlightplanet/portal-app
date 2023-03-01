@@ -40,7 +40,7 @@ export class AuthService {
     // Check if isLoggedIn is true and saved credentials exist
     if (this.isLoggedIn && savedUsername && savedPassword) {
       // Check if credentials match
-      if (savedUsername === 'sathyam' && savedPassword === 'goyal') {
+      if (savedUsername === 'glpadmin' && savedPassword === 'glp@123') {
         return true;
       }
     }
